@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POCO - Brunch Cafe & Wine Bar Menu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Noto+Serif+KR:wght@300;400;600;700&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', '"Noto Serif KR"', 'serif'],
+                        sans: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        poco: {
+                            cream: '#FAF6F0',
+                            sand: '#F3EDE2',
+                            forest: '#1E3B2F',
+                            gold: '#C5A880',
+                            orange: '#E35E30', /* 포코의 테라코타 오렌지 시그니처 포인트 */
+                            dark: '#131313',
+                            charcoal: '#1E1E1E',
+                            wine: '#5C1D24'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', 'Noto Serif KR', serif;
+        }
+        /* 아름다운 오렌지 포인트 컬러 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E35E30;
+            border-radius: 10px;
+        }
+        
+        /* 브라우저 기본 인쇄 지원용 CSS 스타일 */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-full-width {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .menu-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1.5rem !important;
+            }
+            .menu-card {
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                margin-bottom: 1rem !important;
+                page-break-inside: avoid;
+            }
+            .print-border {
+                border-bottom: 1px dashed #ccc !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-poco-cream text-poco-forest min-h-screen pb-24">
+
+    <!-- TOP NAVIGATION & CONTROLS -->
+    <header class="no-print sticky top-0 z-30 w-full backdrop-blur-md bg-poco-cream/80 border-b border-poco-sand">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="serif-title font-bold text-2xl tracking-widest text-poco-orange">POCO</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full border border-poco-orange/40 text-poco-orange">Brunch & Wine</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN MENU CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 pt-12 print-full-width">
+        
+        <!-- INTRO HERO SECTION -->
+        <section class="text-center mb-12">
+            <!-- 메인 히어로 영역에 마스코트 손그림을 큼직하게 배치하여 브랜드 아이덴티티 시각화 -->
+            <div class="flex justify-center mb-6">
+                <img src="https://raw.githubusercontent.com/PocoMenu/Menu/refs/heads/main/PocoLogo.jpg" alt="POCO Mascot" class="h-40 md:h-48 w-auto object-contain mix-blend-multiply" onerror="this.src='https://placehold.co/200x200/FAF6F0/E35E30?text=POCO'">
+            </div>
+            <div class="w-16 h-[2px] bg-poco-orange mx-auto mb-5"></div>
+            <div class="inline-block bg-poco-orange/5 border border-poco-orange/20 rounded-2xl p-5 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+                <p class="font-medium text-poco-orange mb-1">🍷 POCO WINE POLICY</p>
+                <p class="text-poco-forest/90 font-light">
+                    콜키지 프리 이용 시 인당 3만원 주문 필수<br>
+                    미 충족 시 와인 병당 20,000원 / 위스키 30,000원<br>
+                    잔 교체 5,000원 / 브로큰 차지 10,000원
+                </p>
+            </div>
+        </section>
+
+        <!-- NO-PRINT IN-PAGE CATEGORY FILTER -->
+        <div class="no-print flex justify-center gap-2 mb-10 overflow-x-auto pb-2">
+            <button onclick="filterCategory('all')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-orange text-poco-cream bg-poco-orange transition-all whitespace-nowrap" data-category="all">
+                전체 와인
+            </button>
+            <button onclick="filterCategory('Sparkling')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Sparkling">
+                Sparkling
+            </button>
+            <button onclick="filterCategory('White')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="White">
+                White
+            </button>
+            <button onclick="filterCategory('Orange')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Orange">
+                Orange
+            </button>
+            <button onclick="filterCategory('Red')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Red">
+                Red
+            </button>
+        </div>
+
+        <!-- MENU GROUPS -->
+        <div id="menu-sections-wrapper" class="space-y-16 max-w-2xl mx-auto">
+            
+            <!-- SECTION 1: Sparkling -->
+            <section class="menu-section-block transition-all duration-300" id="section-Sparkling" data-cat-type="Sparkling">
+                <div class="flex items-center justify-between border-b border-poco-orange/30 pb-3 mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <h2 class="serif-title text-2xl font-semibold text-poco-forest">Sparkling</h2>
+                        <span class="text-xs text-poco-orange tracking-wider uppercase font-medium">Bubbles & Fresh</span>
+                    </div>
+                </div>
+                <div class="menu-grid flex flex-col gap-y-6" id="grid-Sparkling">
+                    <!-- Loaded dynamically via Javascript -->
+                </div>
+            </section>
+
+            <!-- SECTION 2: White -->
+            <section class="menu-section-block transition-all duration-300" id="section-White" data-cat-type="White">
+                <div class="flex items-center justify-between border-b border-poco-orange/30 pb-3 mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <h2 class="serif-title text-2xl font-semibold text-poco-forest">White</h2>
+                        <span class="text-xs text-poco-orange tracking-wider uppercase font-medium">Crisp & Elegant</span>
+                    </div>
+                </div>
+                <div class="menu-grid flex flex-col gap-y-6" id="grid-White">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- SECTION 3: Orange -->
+            <section class="menu-section-block transition-all duration-300" id="section-Orange" data-cat-type="Orange">
+                <div class="flex items-center justify-between border-b border-poco-orange/30 pb-3 mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <h2 class="serif-title text-2xl font-semibold text-poco-forest">Orange</h2>
+                        <span class="text-xs text-poco-orange tracking-wider uppercase font-medium">Unique & Natural</span>
+                    </div>
+                </div>
+                <div class="menu-grid flex flex-col gap-y-6" id="grid-Orange">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- SECTION 4: Red -->
+            <section class="menu-section-block transition-all duration-300" id="section-Red" data-cat-type="Red">
+                <div class="flex items-center justify-between border-b border-poco-orange/30 pb-3 mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <h2 class="serif-title text-2xl font-semibold text-poco-forest">Red</h2>
+                        <span class="text-xs text-poco-orange tracking-wider uppercase font-medium">Deep & Velvet</span>
+                    </div>
+                </div>
+                <div class="menu-grid flex flex-col gap-y-6" id="grid-Red">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+        </div>
+
+        <!-- COOP NOTE & FOOTER -->
+        <footer class="mt-20 pt-8 border-t border-poco-sand/60 text-center max-w-2xl mx-auto">
+            <p class="serif-title text-lg tracking-wider mb-2 text-poco-orange">POCO BRUNCH & WINE</p>
+            <p class="text-xs text-poco-forest/50 leading-relaxed">
+                인스타그램 @poco.seoul · 와인 콜키지 프리 운영 규정 적용 · 알레르기 유발 물질이 있으신 분은 직원에게 꼭 미리 말씀해 주세요.
+            </p>
+        </footer>
+    </main>
+
+    <!-- DETAIL POPUP MODAL (No Print) -->
+    <div id="detail-modal" class="no-print fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeModal(event)">
+        <div class="bg-poco-cream rounded-3xl max-w-md w-full border border-poco-sand overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modal-card" onclick="event.stopPropagation()">
+            <div class="relative p-6 pb-4">
+                <button onclick="closeModal(null)" class="absolute top-4 right-4 text-poco-forest/60 hover:text-poco-forest transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="text-xs text-poco-orange font-bold uppercase tracking-wider mb-2" id="modal-category">Brunch</div>
+                <h3 class="serif-title text-2xl font-bold text-poco-forest mb-2" id="modal-name">Menu Title</h3>
+                <span class="text-lg font-semibold text-poco-orange" id="modal-price">0,000₩</span>
+                <div class="w-full h-[1px] bg-poco-sand my-4"></div>
+                <p class="text-sm text-poco-forest/80 leading-relaxed mb-6" id="modal-desc">Detailed descriptions of ingredients, taste profile, and mood.</p>
+                
+                <!-- Extra pairings / tags inside modal -->
+                <div class="bg-poco-sand/40 rounded-2xl p-4 border border-poco-sand">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-poco-forest mb-2">
+                        <i data-lucide="glass-water" class="w-3.5 h-3.5 text-poco-orange"></i>
+                        POCO'S SOMMELIER NOTE
+                    </div>
+                    <p class="text-xs text-poco-forest/70 leading-relaxed" id="modal-pairing">
+                        이 요리와 환상적인 마리아주를 이루는 글라스 와인이나 시그니처 크림 라떼와 함께 즐겨보세요!
+                    </p>
+                </div>
+            </div>
+            <div class="bg-poco-orange p-4 flex justify-between items-center text-white">
+                <span class="text-xs">주문을 원하시면 직원을 불러주세요.</span>
+                <button onclick="closeModal(null)" class="text-xs bg-white/20 hover:bg-white/35 text-white font-medium px-3 py-1.5 rounded-full transition-all">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN MENU CONTROLLER SCRIPT -->
+    <script>
+        // Default menu items aligned with wine categories
+        const menuData = {
+            Sparkling: [
+                {
+                    id: "s1",
+                    name: "카바 브뤼 보네발",
+                    nameEng: "Cava Brut Bonneval",
+                    price: "45,000",
+                    desc: "신선한 청사과와 시트러스 풍미, 섬세한 버블이 입안을 부드럽게 감싸는 스페인산 정통 스파클링 와인.",
+                    pairing: "매콤한 샥슈카나 해산물 샐러드와 페어링할 때 훌륭한 산미 밸런스를 이룹니다.",
+                    tag: "Signature"
+                },
+                {
+                    id: "s2",
+                    name: "모스카토 다스티 디오씨지",
+                    nameEng: "Moscato d'Asti DOCG",
+                    price: "42,000",
+                    desc: "달콤한 아카시아 꽃향기와 부드러운 꿀 풍미가 매력적이며 누구나 가볍고 달콤하게 즐길 수 있는 디저트 와인.",
+                    pairing: "달콤함과 버터향 가득한 클래식 프렌치 토스트와 환상적인 궁합을 자랑합니다.",
+                    tag: "Sweet Best"
+                }
+            ],
+            White: [
+                {
+                    id: "w1",
+                    name: "마운트 에덴 쇼비뇽 블랑",
+                    nameEng: "Mount Eden Sauvignon Blanc",
+                    price: "48,000",
+                    desc: "싱그러운 풀잎 향과 레몬, 패션프루트의 과즙미가 돋보이며 적당한 산미를 지닌 대중적인 화이트 와인.",
+                    pairing: "포코의 레몬 엔초비 파스타와 함께할 때 산뜻한 시너지 감칠맛이 폭발합니다.",
+                    tag: "Popular"
+                },
+                {
+                    id: "w2",
+                    name: "리저브 샤르도네",
+                    nameEng: "Reserve Chardonnay",
+                    price: "52,000",
+                    desc: "은은한 바닐라 및 구운 토스트의 오크 터치와 노란 복숭아의 풍부한 바디감이 조화로운 우아한 와인.",
+                    pairing: "고소한 허니 리코타 치즈와 견과류 플레이트와 묵직하게 조화됩니다.",
+                    tag: "Classic"
+                }
+            ],
+            Orange: [
+                {
+                    id: "o1",
+                    name: "기기 내추럴 오렌지 와인",
+                    nameEng: "Gigi Natural Orange",
+                    price: "58,000",
+                    desc: "포도 껍질을 함께 침전시켜 깊은 엠버색을 띠며, 오렌지 필과 허브 향, 독특한 떫은맛이 일품인 내추럴 와인.",
+                    pairing: "특유의 산미와 바디감 덕분에 바삭 양송이버섯튀김 등 튀김 요리의 느끼함을 훌륭하게 잡아줍니다.",
+                    tag: "Natural Wine"
+                }
+            ],
+            Red: [
+                {
+                    id: "r1",
+                    name: "부르고뉴 핀 누아",
+                    nameEng: "Bourgogne Pinot Noir",
+                    price: "56,000",
+                    desc: "투명하고 맑은 루비 컬러에 붉은 체리, 야생 딸기 향과 대지의 흙내음이 섬세하게 녹아든 드라이 레드 와인.",
+                    pairing: "수비드 기법으로 조리한 부드러운 오리 가슴살 스테이크와 완벽한 마리아주를 보여줍니다.",
+                    tag: "Sommelier Pick"
+                },
+                {
+                    id: "r2",
+                    name: "클래식 카베르네 쇼비뇽",
+                    nameEng: "Classic Cabernet Sauvignon",
+                    price: "54,000",
+                    desc: "잘 익은 블랙베리, 짙은 서양자두의 묵직한 아로마와 탄탄한 탄닌 구조감이 돋보이는 묵직한 레드 와인.",
+                    pairing: "치즈 & 샤퀴테리 플래터의 프로슈토, 살라미의 짭조름한 풍미와 가장 클래식하게 어울립니다.",
+                    tag: "Full-Body"
+                }
+            ]
+        };
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenus();
+            lucide.createIcons();
+        });
+
+        // Dynamic Renderer to display all matching submenus in single column
+        function renderMenus() {
+            const categories = ['Sparkling', 'White', 'Orange', 'Red'];
+            
+            categories.forEach(cat => {
+                const grid = document.getElementById(`grid-${cat}`);
+                if (!grid) return;
+                grid.innerHTML = '';
+                
+                menuData[cat].forEach((item) => {
+                    const card = document.createElement('div');
+                    card.className = "menu-card group relative p-4 rounded-2xl transition-all duration-300 hover:bg-poco-sand/40 border border-transparent hover:border-poco-sand cursor-pointer print-border";
+                    card.setAttribute('onclick', `openModalDetails('${cat}', '${item.id}')`);
+                    
+                    card.innerHTML = `
+                        <!-- Single row elegant dotted layout -->
+                        <div class="flex items-baseline justify-between mb-1">
+                            <div class="flex items-baseline gap-2 flex-grow min-w-0 mr-4">
+                                <h3 class="font-bold text-base md:text-lg text-poco-forest transition-colors whitespace-nowrap">
+                                    ${item.name}
+                                </h3>
+                                ${item.tag ? `<span class="no-print bg-poco-orange/15 text-poco-orange text-[10px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0">${item.tag}</span>` : ''}
+                                <!-- Beautiful vintage dotted connector line -->
+                                <div class="hidden md:block flex-grow border-b border-dotted border-poco-orange/30 mx-2 h-[2px]"></div>
+                            </div>
+                            <span class="font-serif font-semibold text-sm md:text-base text-poco-orange whitespace-nowrap">
+                                ${item.price}
+                            </span>
+                        </div>
+                        
+                        <div class="flex justify-between items-start">
+                            <div class="w-full">
+                                <p class="text-xs text-poco-forest/50 italic font-medium tracking-wide">
+                                    ${item.nameEng}
+                                </p>
+                                <p class="text-xs md:text-sm text-poco-forest/70 font-light leading-relaxed mt-1.5 max-w-2xl">
+                                    ${item.desc}
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Interactive print-only spacer -->
+                        <div class="hidden print:block w-full border-b border-dashed border-gray-200 mt-3"></div>
+                    `;
+                    grid.appendChild(card);
+                });
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Category Filter logic (no-print)
+        function filterCategory(cat) {
+            const blocks = document.querySelectorAll('.menu-section-block');
+            const buttons = document.querySelectorAll('.cat-filter-btn');
+            
+            blocks.forEach(block => {
+                if (cat === 'all') {
+                    block.classList.remove('hidden');
+                } else if (block.getAttribute('data-cat-type') === cat) {
+                    block.classList.remove('hidden');
+                } else {
+                    block.classList.add('hidden');
+                }
+            });
+
+            // Update Active Buttons to orange accent
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-category') === cat) {
+                    btn.classList.add('bg-poco-orange', 'text-poco-cream', 'border-poco-orange');
+                    btn.classList.remove('text-poco-forest/80', 'border-poco-forest/20');
+                } else {
+                    btn.classList.remove('bg-poco-orange', 'text-poco-cream', 'border-poco-orange');
+                    btn.classList.add('text-poco-forest/80', 'border-poco-forest/20');
+                }
+            });
+        }
+
+        // Modal Popups
+        function openModalDetails(category, id) {
+            const item = menuData[category].find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-category').innerText = category.toUpperCase();
+            document.getElementById('modal-name').innerText = item.name;
+            document.getElementById('modal-price').innerText = item.price + " ₩";
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-pairing').innerText = item.pairing || "포코의 소믈리에가 엄선하는 시즌 와인과 요리의 조화로운 감동을 느껴보세요.";
+
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('modal-card');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal(event) {
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('modal-card');
+            
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
