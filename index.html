@@ -202,7 +202,7 @@
         <footer class="mt-20 pt-8 border-t border-poco-sand/60 text-center max-w-2xl mx-auto">
             <p class="serif-title text-lg tracking-wider mb-2 text-poco-orange">POCO BRUNCH & WINE</p>
             <p class="text-xs text-poco-forest/50 leading-relaxed">
-                인스타그램 @poco.seoul · 와인 콜키지 프리 운영 규정 적용 · 알레르기 유발 물질이 있으신 분은 직원에게 꼭 미리 말씀해 주세요.
+                인스타그램 <a href="https://www.instagram.com/poco.seoul/">@poco.seoul</a> · 와인 콜키지 프리 운영 규정 적용 · 알레르기 유발 물질이 있으신 분은 직원에게 꼭 미리 말씀해 주세요.
             </p>
         </footer>
     </main>
@@ -604,7 +604,7 @@
                     price: "96,000",
                     vintage: "NV",
                     desc: "2024 아시아 와인 트로피 골드메달 수상작. 금귤과 자몽 껍질의 쌉싸름함과 부드러운 타닌이 녹아든 감각적인 오렌지 와인.",
-                    pairing: "생산지: 헝가리 발라톤 | 품종: Hårslevelű (하쉬레벨루)",
+                    pairing: "생산지: 헝가리 발라톤 | 품종: Hårslevelű (하쉬levelű)",
                     tag: "Asia Gold Medal"
                 }
             ],
@@ -846,24 +846,24 @@
                     const hasVintage = item.vintage && item.vintage !== 'NV';
                     const displayNameWithVintage = hasVintage ? `${item.name} ${item.vintage}` : item.name;
 
-                    // Construct tag HTML
+                    // Construct tag HTML with absolute flex-shrink properties to prevent collision
                     let tagHtml = '';
                     if (item.tag) {
-                        tagHtml = `<span class="no-print bg-poco-orange/15 text-poco-orange text-[10px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0 font-sans">${item.tag}</span>`;
+                        tagHtml = `<span class="no-print bg-poco-orange/15 text-poco-orange text-[10px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0 font-sans whitespace-nowrap">${item.tag}</span>`;
                     }
 
                     card.innerHTML = `
-                        <!-- Single row elegant dotted layout -->
-                        <div class="flex items-baseline justify-between mb-1">
-                            <div class="flex items-baseline gap-2 flex-grow min-w-0 mr-4">
-                                <h3 class="font-bold text-base md:text-lg text-poco-forest transition-colors whitespace-nowrap font-sans">
+                        <!-- Single row elegant dotted layout with flex wrap protection -->
+                        <div class="flex items-start md:items-baseline justify-between gap-4 mb-1 w-full">
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 flex-grow min-w-0">
+                                <h3 class="font-bold text-base md:text-lg text-poco-forest transition-colors break-words font-sans">
                                     ${displayNameWithVintage}
                                 </h3>
                                 ${tagHtml}
-                                <!-- Beautiful vintage dotted connector line -->
-                                <div class="hidden md:block flex-grow border-b border-dotted border-poco-orange/30 mx-2 h-[2px]"></div>
+                                <!-- Beautiful vintage dotted connector line (hidden on small wrapping screens) -->
+                                <div class="hidden md:block flex-grow border-b border-dotted border-poco-orange/30 mx-2 h-[2px] self-end mb-[5px]"></div>
                             </div>
-                            <span class="font-serif font-semibold text-sm md:text-base text-poco-orange whitespace-nowrap">
+                            <span class="font-serif font-semibold text-sm md:text-base text-poco-orange whitespace-nowrap flex-shrink-0 self-start md:self-auto">
                                 ${item.price}
                             </span>
                         </div>
