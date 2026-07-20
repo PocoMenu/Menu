@@ -108,7 +108,7 @@
         <section class="text-center mb-12">
             <div class="flex justify-center mb-6">
                 <!-- 곱하기 블렌딩 효과로 완벽히 크림배경에 스며드는 마스코트 -->
-                <img src="KakaoTalk_20260715_194923298_02.jpg" alt="POCO Mascot" class="h-40 md:h-48 w-auto object-contain mix-blend-multiply" onerror="this.src='https://placehold.co/200x200/FAF6F0/E35E30?text=POCO'">
+                <img src="https://raw.githubusercontent.com/PocoMenu/Menu/refs/heads/main/PocoLogo.jpg" alt="POCO Mascot" class="h-40 md:h-48 w-auto object-contain mix-blend-multiply" onerror="this.src='https://placehold.co/200x200/FAF6F0/E35E30?text=POCO'">
             </div>
             <div class="w-16 h-[2px] bg-poco-orange mx-auto mb-5"></div>
             
@@ -122,22 +122,22 @@
             </div>
         </section>
 
-        <!-- NO-PRINT IN-PAGE CATEGORY FILTER -->
+        <!-- NO-PRINT IN-PAGE CATEGORY FILTER (Counts loaded dynamically via JS to avoid mismatch) -->
         <div class="no-print flex justify-center gap-2 mb-10 overflow-x-auto pb-2">
-            <button onclick="filterCategory('all')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-orange text-poco-cream bg-poco-orange transition-all whitespace-nowrap" data-category="all">
+            <button onclick="filterCategory('all')" id="btn-count-all" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-orange text-poco-cream bg-poco-orange transition-all whitespace-nowrap" data-category="all">
                 전체 와인
             </button>
-            <button onclick="filterCategory('Sparkling')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Sparkling">
-                Sparkling (11)
+            <button onclick="filterCategory('Sparkling')" id="btn-count-Sparkling" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Sparkling">
+                Sparkling
             </button>
-            <button onclick="filterCategory('White')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="White">
-                White (20)
+            <button onclick="filterCategory('White')" id="btn-count-White" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="White">
+                White
             </button>
-            <button onclick="filterCategory('Orange')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Orange">
-                Orange (5)
+            <button onclick="filterCategory('Orange')" id="btn-count-Orange" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Orange">
+                Orange
             </button>
-            <button onclick="filterCategory('Red')" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Red">
-                Red (15)
+            <button onclick="filterCategory('Red')" id="btn-count-Red" class="cat-filter-btn px-4 py-2 rounded-full text-xs font-medium border border-poco-forest/20 text-poco-forest/80 hover:border-poco-orange hover:text-poco-orange transition-all whitespace-nowrap" data-category="Red">
+                Red
             </button>
         </div>
 
@@ -226,9 +226,9 @@
                         <i data-lucide="glass-water" class="w-3.5 h-3.5 text-poco-orange"></i>
                         POCO'S SOMMELIER NOTE
                     </div>
-                    <p class="text-xs text-poco-forest/70 leading-relaxed" id="modal-pairing">
-                        이 요리와 환상적인 마리아주를 이루는 글라스 와인이나 시그니처 크림 라떼와 함께 즐겨보세요!
-                    </p>
+                    <div class="text-xs text-poco-forest/70 leading-relaxed" id="modal-pairing">
+                        <!-- Custom pairing contents -->
+                    </div>
                 </div>
             </div>
             <div class="bg-poco-orange p-4 flex justify-between items-center text-white">
@@ -240,7 +240,6 @@
 
     <!-- MAIN MENU CONTROLLER SCRIPT -->
     <script>
-        // Exactly 51 active valid items derived strictly from image_203968.png + image_219cf5.png (including restored price-less items as 50,000₩)
         const menuData = {
             Sparkling: [
                 {
@@ -250,7 +249,9 @@
                     price: "46,000",
                     vintage: "NV",
                     desc: "딸기, 라즈베리, 석류와 은은한 이스트 향, 산뜻한 산미와 달콤한 과실미, 드라이한 피니쉬로 마무리가 깔끔합니다. 신선한 과일향이 도드라집니다.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Syrah, Grenache, Mourvedre (시라, 그르나슈, 무르베드르)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Cinsault, Grenache, Syrah (생소, 그르나슈, 시라)",
+                    abv: "11.5",
                     tag: "Rosé"
                 },
                 {
@@ -260,7 +261,9 @@
                     price: "56,000",
                     vintage: "NV",
                     desc: "산뜻하고 바삭바삭하게 느껴지는 레몬과 라임의 과육, 쌉싸름한 허브향과 민트가 가미되어 청량하고 고급스러운 기포감을 선사합니다.",
-                    pairing: "생산지: 스페인 페네데스(Penedès, Spain) | 품종: Xarel-lo, Macabeo, Parellada, Chardonnay (샤렐로, 마카베오, 파렐라다, 샤르도네)",
+                    region: "스페인 페네데스(Penedès, Spain)",
+                    grapes: "Macabeo, Xarel-lo, Parellada (마카베오, 샤렐로, 파렐라다)",
+                    abv: "11.5",
                     tag: "Premium Cava"
                 },
                 {
@@ -270,7 +273,9 @@
                     price: "43,000",
                     vintage: "375ml",
                     desc: "자두와 잘 익은 서양배의 노트가 첫인상을 이루고 견과류와 백후추의 아로마에 경쾌한 미네랄리티의 피니시가 은은하게 흐릅니다.",
-                    pairing: "생산지: 프랑스 알자스(Alsace, France) | 품종: 피노 블랑 (Pinot Blanc)",
+                    region: "프랑스 알자스(Alsace, France)",
+                    grapes: "Pinot Blanc (피노 블랑)",
+                    abv: "12.0",
                     tag: "Half Bottle"
                 },
                 {
@@ -280,7 +285,9 @@
                     price: "62,000",
                     vintage: "NV",
                     desc: "풍부한 과즙과 산도를 담은 정석적인 알자스 크레망. 자두와 잘 익은 서양배의 노트가 첫인상을 이루고 견과류와 백후추의 아로마에 경쾌한 미네랄리티까지 조화롭습니다.",
-                    pairing: "생산지: 프랑스 알자스(Alsace, France) | 품종: 피노 블랑 (Pinot Blanc)",
+                    region: "프랑스 알자스(Alsace, France)",
+                    grapes: "Pinot Blanc (피노 블랑)",
+                    abv: "12.0",
                     tag: "Alsace Pick"
                 },
                 {
@@ -290,7 +297,9 @@
                     price: "68,000",
                     vintage: "NV",
                     desc: "집중도 있는 노란 과일들의 아로마와 토스티한 풍미. 약간의 비스킷과 오렌지 그리고 부드러운 산도가 느껴지는 보르도 크레망이라 놀랍고 세미용 100%라 더 놀라운 와인.",
-                    pairing: "생산지: 프랑스 보르도(Bordeaux, France) | 품종: Semillon (세미용)",
+                    region: "프랑스 보르도(Bordeaux, France)",
+                    grapes: "Sémillon (세미용)",
+                    abv: "12.0",
                     tag: "Semillon 100%"
                 },
                 {
@@ -300,7 +309,9 @@
                     price: "80,000",
                     vintage: "2016",
                     desc: "말라가는 사과, 레몬, 허브와 하얀꽃, 브리오슈, 커피와 모카, 고소한 견과류, 약간의 스모키함이 일품인 명품 쥐라 스파클링 와인.",
-                    pairing: "생산지: 프랑스 쥐라(Jura, France) | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 쥐라(Jura, France)",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "12.5",
                     tag: "Vintage Jura"
                 },
                 {
@@ -310,7 +321,9 @@
                     price: "83,000",
                     vintage: "NV",
                     desc: "오미자, 라즈베리, 약간의 단맛과 신맛의 조화. 켁프랑코시 특유의 사워체리 향이 싱그럽게 잔잔한 탄산감과 함께 기분 좋게 흐릅니다.",
-                    pairing: "생산지: 헝가리 빌라니(Villány, Hungary) | 품종: Kenfrankos (켁프랑코시)",
+                    region: "헝가리 빌라니(Villány, Hungary)",
+                    grapes: "Kékfrankos (케크프랑코쉬)",
+                    abv: "11.5",
                     tag: "Natural Rosé"
                 },
                 {
@@ -320,7 +333,9 @@
                     price: "82,000",
                     vintage: "NV",
                     desc: "푸르민트 특유의 시트러스와 핵과류향에 효모 앙금과 30개월 이상 접촉시켜 미묘한 브리오슈와 토스티 뉘앙스가 더해지며, 선명한 산도와 크리미한 버블이 돋보이는 제로 도사쥬 와인.",
-                    pairing: "생산지: 헝가리 토카이(Tokaj, Hungary) | 품종: Furmint (푸르민트)",
+                    region: "헝가리 토카이(Tokaj, Hungary)",
+                    grapes: "Furmint (푸르민트)",
+                    abv: "13.0",
                     tag: "Zero Dosage"
                 },
                 {
@@ -330,7 +345,9 @@
                     price: "50,000",
                     vintage: "2021",
                     desc: "선명한 산도와 깔끔한 피니시, 톡톡 튀는 내추럴 펫낫 특유의 활발함과 우수한 구조감을 안겨줍니다. 사장님 기준에 맞추어 50,000원으로 특별 책정되었습니다.",
-                    pairing: "생산지: 오스트리아 부르겐란트 | 품종: Weissburgunder 90%, Muskat Ottonel 10%",
+                    region: "오스트리아 부르겐란트",
+                    grapes: "Weissburgunder, Muskat Ottonel (바이스부르군더, 뮈스카 오토넬)",
+                    abv: "11.5",
                     tag: "Organic Pet-Nat"
                 },
                 {
@@ -340,7 +357,9 @@
                     price: "198,000",
                     vintage: "2012",
                     desc: "잘 익은 사과와 구운 아몬드의 환상적인 버터리 아로마, 최고급 Premier Cru 샤르도네와 피노 누아가 선사하는 극도의 섬세함.",
-                    pairing: "생산지: 프랑스 상파뉴(Champagne) | 품종: Pinot Noir, Chardonnay",
+                    region: "프랑스 상파뉴(Champagne)",
+                    grapes: "Pinot Noir, Chardonnay (피노 누아, 샤르도네)",
+                    abv: "12.0",
                     tag: "Premium Champagne"
                 },
                 {
@@ -350,7 +369,9 @@
                     price: "126,000",
                     vintage: "NV",
                     desc: "장미 꽃잎 같은 맑은 루비빛 너머로 피어나는 야생 딸기와 체리의 상큼한 아로마, 우아하고 긴 여운을 전달해 주는 고품격 샴페인.",
-                    pairing: "생산지: 프랑스 상파뉴(Champagne) | 품종: Pinot Noir, Chardonnay",
+                    region: "프랑스 상파뉴(Champagne)",
+                    grapes: "Pinot Noir, Chardonnay, Pinot Meunier (피노 누아, 샤르도네, 피노 뫼니에)",
+                    abv: "12.0",
                     tag: "Grand Rosé"
                 }
             ],
@@ -362,7 +383,9 @@
                     price: "49,000",
                     vintage: "2021",
                     desc: "라임, 자몽, 패션프루트, 구스베리, 엘더플라워의 싱그러움과 온화한 기후가 일궈낸 산뜻한 산미가 청량하게 다가옵니다.",
-                    pairing: "생산지: 뉴질랜드 말버러 | 품종: Sauvignon Blanc (소비뇽 블랑)",
+                    region: "뉴질랜드 말버러",
+                    grapes: "Sauvignon Blanc (소비뇽 블랑)",
+                    abv: "13.0",
                     tag: "Fresh Grass"
                 },
                 {
@@ -372,7 +395,9 @@
                     price: "53,000",
                     vintage: "2022",
                     desc: "유기농 와인으로, 복숭아와 구운 헤이즐넛, 아몬드의 고소한 뉘앙스가 매력적입니다. 신선하고 짭짤한 피니시로 훌륭한 밸런스를 이룹니다.",
-                    pairing: "생산지: 프랑스 랑그독 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 랑그독",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "13.5",
                     tag: "Creamy Nutty"
                 },
                 {
@@ -382,7 +407,9 @@
                     price: "71,000",
                     vintage: "2023",
                     desc: "잘 익은 사과, 감귤류 등의 시트러스 계열 아로마들이 지속적으로 피어 오르며 생기 넘치는 과실 풍미와 기분 좋은 산도를 전합니다.",
-                    pairing: "생산지: 프랑스 부르고뉴 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 부르고뉴",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "13.0",
                     tag: "Elegant Classic"
                 },
                 {
@@ -392,7 +419,9 @@
                     price: "84,000",
                     vintage: "2022",
                     desc: "청사과와 시트러스, 짠 맛의 라임 한 방울을 피시하듯 발랄하고 상쾌한 지중해식 화이트 와인. 이탈리안 샤블리 스타일의 정수.",
-                    pairing: "생산지: 이탈리아 마르케 | 품종: Verdicchio (베르디치오)",
+                    region: "이탈리아 마르케",
+                    grapes: "Verdicchio (베르디치오)",
+                    abv: "12.5",
                     tag: "Michelin Pick"
                 },
                 {
@@ -402,7 +431,9 @@
                     price: "92,000",
                     vintage: "2023",
                     desc: "리치, 아로마틱, 플로럴, 트로피컬한 풍미가 가벼우면서도 상큼하고 경쾌한 산도와 어우러지는 기분 좋은 유기농 화이트.",
-                    pairing: "생산지: 이탈리아 롬바르디아 | 품종: Traminer (트라미너)",
+                    region: "이탈리아 롬바르디아",
+                    grapes: "Riesling, Müller-Thurgau, Chardonnay (리슬링, 뮐러-투르가우, 샤르도네)",
+                    abv: "12.0",
                     tag: "Aromatic Sweet"
                 },
                 {
@@ -412,7 +443,9 @@
                     price: "50,000",
                     vintage: "2023",
                     desc: "살구, 복숭아, 오렌지 껍질향과 함께 들꽃 향이 퍼집니다. 옛날 토스카나 농부 스타일의 따스하고 내추럴한 풍미. 사장님 기준에 맞추어 50,000원으로 조정되었습니다.",
-                    pairing: "생산지: 이탈리아 토스카나 | 품종: Trebbiano (트레비아노)",
+                    region: "이탈리아 토스카나",
+                    grapes: "Trebbiano Toscano (트레비아노 토스카노)",
+                    abv: "12.0",
                     tag: "Tuscany Natural"
                 },
                 {
@@ -422,7 +455,9 @@
                     price: "63,000",
                     vintage: "2022",
                     desc: "레몬 제스트와 자몽 껍질의 상큼한 시트러스로 지중해의 청량한 바람을 닮은 산뜻하고 미네랄 가득한 화이트.",
-                    pairing: "생산지: 이탈리아 토스카나 | 품종: Vermentino (베르멘티노)",
+                    region: "이탈리아 토스카나",
+                    grapes: "Vermentino (베르멘티노)",
+                    abv: "13.5",
                     tag: "Zesty Herb"
                 },
                 {
@@ -432,7 +467,9 @@
                     price: "76,000",
                     vintage: "2022",
                     desc: "잘 익은 살구, 노란 사과, 감귤, 흰 복숭아와 흰 꽃의 향. 드라이하고 묵직한 미네랄리티와 훌륭한 산도를 보여줍니다.",
-                    pairing: "생산지: 스페인 리아스 바이샤스 | 품종: Albarino (알바리뇨)",
+                    region: "스페인 리아스 바이샤스",
+                    grapes: "Albariño (알바리뇨)",
+                    abv: "12.5",
                     tag: "Crisp Salty"
                 },
                 {
@@ -442,7 +479,9 @@
                     price: "90,000",
                     vintage: "2022",
                     desc: "시트러스, 꽃, 페트롤, 생강, 은은한 버터와 크림 뉘앙스가 우아하게 녹아든 정교한 구조감의 화이트.",
-                    pairing: "생산지: 프랑스 부르고뉴 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 부르고뉴",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "12.5",
                     tag: "Buttery Rich"
                 },
                 {
@@ -452,7 +491,9 @@
                     price: "82,000",
                     vintage: "2023",
                     desc: "굴 화석이 풍부한 키메리지안 토양 특유의 날카로운 미네랄리티가 레몬, 베르가못의 아로마와 입안에서 둥글게 어우러집니다.",
-                    pairing: "생산지: 프랑스 부르고뉴 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 부르고뉴",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "12.5",
                     tag: "Mineral Classic"
                 },
                 {
@@ -462,7 +503,9 @@
                     price: "92,000",
                     vintage: "2022",
                     desc: "청사과, 만다린, 상큼한 오렌지 필 아로마와 부드러운 산미, 그리고 후미에 길게 남는 야생 허브 터치가 세련된 내추럴 와인.",
-                    pairing: "생산지: 프랑스 론 | 품종: Grenache Blanc, Sauvignon, Chardonnay",
+                    region: "프랑스 론",
+                    grapes: "Sauvignon Blanc, Chardonnay, Grenache Blanc (소비뇽 블랑, 샤르도네, 그르나슈 블랑)",
+                    abv: "13.0",
                     tag: "Natural White"
                 },
                 {
@@ -472,7 +515,9 @@
                     price: "92,000",
                     vintage: "2023",
                     desc: "시트러스, 꽃, 야생 허브의 프레시한 노트에 쥬시함과 경쾌한 미디움 바디가 활기차게 밀려오는 알자스 내추럴 리슬링.",
-                    pairing: "생산지: 프랑스 알자스 | 품종: Riesling (리슬링)",
+                    region: "프랑스 알자스",
+                    grapes: "Riesling (리슬링)",
+                    abv: "12.5",
                     tag: "Zesty Riesling"
                 },
                 {
@@ -482,7 +527,9 @@
                     price: "96,000",
                     vintage: "2021",
                     desc: "배, 감귤, 자몽, 꿀의 농축미 넘치는 과실 풍미와 짭조름한 소금 미네랄이 선사하는 오밀조밀하고 꽉 찬 피니시.",
-                    pairing: "생산지: 프랑스 루시옹 | 품종: Macabeu (마카베우)",
+                    region: "프랑스 루시옹",
+                    grapes: "Maccabeu, Carignan Blanc, Grenache Blanc (마카베우, 카리냥 블랑, 그르나슈 블랑)",
+                    abv: "13.0",
                     tag: "Intense Salty"
                 },
                 {
@@ -492,7 +539,9 @@
                     price: "102,000",
                     vintage: "2023",
                     desc: "아름다운 노란 레몬 빛깔을 띠며 싱그러운 청사과와 서양배의 아로마가 풍부하게 전해지는 우아하고 고급스러운 부르고뉴 화이트.",
-                    pairing: "생산지: 프랑스 부르고뉴 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 부르고뉴",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "13.0",
                     tag: "Grand Burgundy"
                 },
                 {
@@ -502,7 +551,9 @@
                     price: "100,000",
                     vintage: "2023",
                     desc: "산 속에서 갓 딴 신선한 청포도 과즙을 맑고 달콤하게 짜놓은 듯, 인공미를 완전히 덜어낸 가장 순수한 내추럴 와인.",
-                    pairing: "생산지: 프랑스 론 | 품종: Marsanne, Muscat, Viognier, Petit Manseng",
+                    region: "프랑스 론",
+                    grapes: "Muscat, Marsanne, Petit Manseng (뮈스카, 마르산느, 프티 망생)",
+                    abv: "11.5",
                     tag: "Pure Grape Juice"
                 },
                 {
@@ -512,7 +563,9 @@
                     price: "100,000",
                     vintage: "2022",
                     desc: "야생 복숭아, 멜론, 살구 껍질의 풍만한 과실감과 이국적인 흰 꽃 향이 화사하게 어우러지는 우수한 비오니에 내추럴 와인.",
-                    pairing: "생산지: 프랑스 론 | 품종: Viognier (비오니에)",
+                    region: "프랑스 론",
+                    grapes: "Viognier (비오니에)",
+                    abv: "13.5",
                     tag: "Aromatic Viognier"
                 },
                 {
@@ -522,7 +575,9 @@
                     price: "110,000",
                     vintage: "2022",
                     desc: "건조 살구의 달콤한 과즙 뉘앙스와 묵직하고 유려한 오크 터치, 긴 여운을 자아내는 격조 높은 부르고뉴 샤르도네.",
-                    pairing: "생산지: 프랑스 부르고뉴 | 품종: Chardonnay (샤르도네)",
+                    region: "프랑스 부르고뉴",
+                    grapes: "Chardonnay (샤르도네)",
+                    abv: "13.0",
                     tag: "Rich Oak Classic"
                 },
                 {
@@ -532,7 +587,9 @@
                     price: "120,000",
                     vintage: "2019",
                     desc: "청사과, 레몬, 망고, 말린 과일의 깊은 밀도. 50년 이상 올드바인의 중후한 미네랄과 오크 풍미가 압도적입니다.",
-                    pairing: "생산지: 프랑스 루아르 상세르 | 품종: Sauvignon Blanc (소비뇽 블랑)",
+                    region: "프랑스 루아르 상세르",
+                    grapes: "Sauvignon Blanc (소비뇽 블랑)",
+                    abv: "13.0",
                     tag: "Old Vine Sancerre"
                 },
                 {
@@ -542,7 +599,9 @@
                     price: "120,000",
                     vintage: "2019",
                     desc: "레몬, 라임, 복숭아 아로마가 은은하고 묵직한 오크 숙성에서 오는 미네랄리티와 어우러진 명품 루아르 내추럴 와인.",
-                    pairing: "생산지: 프랑스 루아르 | 품종: Sauvignon Blanc (소비뇽 블랑)",
+                    region: "프랑스 루아르",
+                    grapes: "Sauvignon Blanc (소비뇽 블랑)",
+                    abv: "13.5",
                     tag: "Premium Natural"
                 },
                 {
@@ -552,7 +611,9 @@
                     price: "128,000",
                     vintage: "2020",
                     desc: "석회질 토양의 자극적인 산미와 점토질의 깊은 감칠맛, 크리미하고 기품 있는 잔당감이 황홀한 하이엔드 슈냉 블랑 와인.",
-                    pairing: "생산지: 프랑스 루아르 | 품종: Chenin Blanc (슈냉 블랑)",
+                    region: "프랑스 루아르",
+                    grapes: "Chenin Blanc (슈냉 블랑)",
+                    abv: "13.5",
                     tag: "Elegant Chenin"
                 }
             ],
@@ -564,7 +625,9 @@
                     price: "90,000",
                     vintage: "2022",
                     desc: "21일 동안 껍질과 함께 접촉(침전)시켜 탄생한 망고, 복숭아, 살구의 이국적인 아로마와 홍차를 머금은 듯 세련된 타닌.",
-                    pairing: "생산지: 프랑스 루시옹 | 품종: Muscat Petits Grains",
+                    region: "프랑스 루시옹",
+                    grapes: "Muscat à Petits Grains (뮈스카 아 프티 그랭)",
+                    abv: "12.5",
                     tag: "Amber Tea Touch"
                 },
                 {
@@ -574,7 +637,9 @@
                     price: "78,000",
                     vintage: "NV",
                     desc: "금귤과 자몽 껍질의 쌉싸름한 시트러스 아로마와 허브, 화사한 오렌지 빛깔이 매혹적인 조화를 선사하는 가벼운 바디의 내추럴 와인.",
-                    pairing: "생산지: 칠레 콜차구아 밸리 | 품종: Viognier (비오니에)",
+                    region: "칠레 콜차구아 밸리",
+                    grapes: "Viognier (비오니에)",
+                    abv: "13.5",
                     tag: "Zesty Orange"
                 },
                 {
@@ -584,7 +649,9 @@
                     price: "93,000",
                     vintage: "2020",
                     desc: "장미꽃, 오렌지, 복숭아, 꿀의 달콤한 향과 껍질 침전에서 오는 매력적이고 드라이한 쌉싸름함이 융합된 알자스 대표 내추럴 와인.",
-                    pairing: "생산지: 프랑스 알자스 | 품종: Gewürztraminer, Pinot Gris",
+                    region: "프랑스 알자스",
+                    grapes: "Gewürztraminer, Pinot Gris, Muscat, Riesling (게뷔르츠트라미너, 피노 그리, 뮈스카, 리슬링)",
+                    abv: "13.5",
                     tag: "Alsace Amber"
                 },
                 {
@@ -594,7 +661,9 @@
                     price: "96,000",
                     vintage: "2022",
                     desc: "말린 흰 꽃과 금귤, 자몽의 쌉싸름함이 가볍고 미디움 바디의 은은한 산미와 함께 꿀처럼 어우러지는 사랑스러운 오렌지 와인.",
-                    pairing: "생산지: 프랑스 루시옹 | 품종: Muscat Petits Grains",
+                    region: "프랑스 루시옹",
+                    grapes: "Muscat à Petits Grains (뮈스카 아 프티 그랭)",
+                    abv: "13.5",
                     tag: "Old Vine Amber"
                 },
                 {
@@ -604,7 +673,9 @@
                     price: "96,000",
                     vintage: "NV",
                     desc: "2024 아시아 와인 트로피 골드메달 수상작. 금귤과 자몽 껍질의 쌉싸름함과 부드러운 타닌이 녹아든 감각적인 오렌지 와인.",
-                    pairing: "생산지: 헝가리 발라톤 | 품종: Hårslevelű (하쉬levelű)",
+                    region: "헝가리 발라톤",
+                    grapes: "Hárslevelű (하르슐레벨루)",
+                    abv: "12.5",
                     tag: "Asia Gold Medal"
                 }
             ],
@@ -616,7 +687,9 @@
                     price: "62,000",
                     vintage: "NV",
                     desc: "스페인 페네데스의 화사한 햇살을 받고 탄생한 유기농 레드 와인. 맑고 깔끔하게 피어나는 붉은 베리류와 섬세하게 다듬어진 은은한 유기농 타닌감이 부드러운 균형감을 선물합니다.",
-                    pairing: "생산지: 스페인 페네데스 | 품종: Grenache, Tempranillo, Syrah (가르나차, 템프라니요, 쉬라)",
+                    region: "스페인 페네데스",
+                    grapes: "Grenache, Tempranillo, Syrah (가르나차, 템프라니요, 시라)",
+                    abv: "13.5",
                     tag: "Organic Red"
                 },
                 {
@@ -626,7 +699,9 @@
                     price: "68,000",
                     vintage: "2020",
                     desc: "쥐라 토착 품종 블렌딩의 정수. 야생 베리의 산뜻함과 정돈된 산미, 가죽과 이스트 풍미가 빚어내는 은은한 깊이감이 매력적인 와인.",
-                    pairing: "생산지: 프랑스 쥐라(Jura, France) | 품종: Pinot Noir, Trousseau, Poulsard (피노누아, 트루쏘, 뿔사르)",
+                    region: "프랑스 쥐라(Jura, France)",
+                    grapes: "Pinot Noir, Trousseau, Poulsard (피노 누아, 트루쏘, 뿔사르)",
+                    abv: "12.5",
                     tag: "Jura Classic"
                 },
                 {
@@ -636,7 +711,9 @@
                     price: "76,000",
                     vintage: "NV",
                     desc: "블랙체리와 검은 자두의 농축된 아로마에 감초, 시나몬 등 고급스러운 스파이스와 세련된 흙내음이 벨벳 같은 타닌에 녹아든 하이엔드 론 레드.",
-                    pairing: "생산지: 프랑스 론(Rhone, France) | 품종: Syrah, Grenache (시라, 그르나슈)",
+                    region: "프랑스 론(Rhone, France)",
+                    grapes: "Syrah, Grenache (시라, 그르나슈)",
+                    abv: "14.0",
                     tag: "Legendary Rhone"
                 },
                 {
@@ -646,7 +723,9 @@
                     price: "80,000",
                     vintage: "2019",
                     desc: "붉은 꽃과 붉은 과실, 다크 초콜릿, 살짝의 스파이시함과 미네랄리티 피니쉬가 인상적이고 우아하며 섬세한 향을 지닌 키안티 클라시코.",
-                    pairing: "생산지: 이탈리아 토스카나(Tuscany, Italy) | 품종: Sangiovese (산지오베제)",
+                    region: "이탈리아 토스카나(Tuscany, Italy)",
+                    grapes: "Sangiovese (산지오베제)",
+                    abv: "14.0",
                     tag: "Classic Chianti"
                 },
                 {
@@ -656,7 +735,9 @@
                     price: "98,000",
                     vintage: "2020",
                     desc: "풍부한 과일의 텍스처와 신선한 산도, 가벼우면서도 복합적인 야생 아로마가 가득 전해지는 개성적이고 우수한 가메 내추럴 와인.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Gamay (가메)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Gamay (가메)",
+                    abv: "12.5",
                     tag: "Rare Gamay"
                 },
                 {
@@ -666,7 +747,9 @@
                     price: "100,000",
                     vintage: "2022",
                     desc: "루비 빛을 띠며, 어릴 때는 선홍빛을 띤다. 딸기, 라즈베리 같은 붉은 베리류 향기가 짙게 피어나며, 은은한 산도와 부드러운 탄닌이 일품입니다.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "La Moutonniere"
                 },
                 {
@@ -676,7 +759,9 @@
                     price: "123,000",
                     vintage: "2022",
                     desc: "투명하고 아련한 장미 향과 야생 체리, 젖은 낙엽과 버섯의 깊이 있는 숲길 향이 벨벳처럼 부드러운 산도와 합을 이루는 귀한 피노누아.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "Pure Burgundy"
                 },
                 {
@@ -686,7 +771,9 @@
                     price: "110,000",
                     vintage: "2022",
                     desc: "모란, 산딸기, 붉은 체리, 낙엽, 가벼운 타닌이 기품 넘치게 어우러지는 다비드 뒤방의 입문용 와인.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "David Duband"
                 },
                 {
@@ -696,7 +783,9 @@
                     price: "136,000",
                     vintage: "2021",
                     desc: "교황의 와인다운 면모. 검은 과일의 진한 밀도, 삼나무와 가죽, 정교한 가르나차 품종 중심의 스파이시한 향신료 아로마가 가득한 파워풀 풀바디.",
-                    pairing: "생산지: 프랑스 론(Rhone, France) | 품종: Grenache, Syrah, Cinsault (그르나슈, 시라, 생소)",
+                    region: "프랑스 론(Rhone, France)",
+                    grapes: "Grenache, Syrah, Cinsault (그르나슈, 시라, 생소)",
+                    abv: "14.5",
                     tag: "CdP Master"
                 },
                 {
@@ -706,7 +795,9 @@
                     price: "145,000",
                     vintage: "2022",
                     desc: "다비드 뒤방의 테루아 해석을 담은 고급 빌라쥬 와인. 야생 체리와 잘 구워진 허브, 오크 터치의 긴 피니시와 미끄러지는 탄닌 질감이 압권.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "Nuits-Villages"
                 },
                 {
@@ -716,7 +807,9 @@
                     price: "150,000",
                     vintage: "2022",
                     desc: "붉은 으깬 꽃잎과 줄기의 플로럴한 향이 잘 드러나는 와인. 마치 북유럽 숲에 서 있는 듯한 신선한 아로마와 섬세한 질감이 매력적입니다.",
-                    pairing: "생산지: 호주 애들레이드 힐 | 품종: Pinot Noir (피노 누아)",
+                    region: "호주 애들레이드 힐",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "12.5",
                     tag: "Forest Path"
                 },
                 {
@@ -726,7 +819,9 @@
                     price: "170,000",
                     vintage: "2020",
                     desc: "사비니 마을 언덕 아래 프리미에 크뤼 레투아레 아래 위치. 50년 수령의 올드바인이 뿜어내는 깊은 미네랄과 자두, 생코코아, 검은 흙내음이 수려하게 폭발하는 힘찬 부르고뉴 클래식 레드.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "Old Vine Savigny"
                 },
                 {
@@ -736,7 +831,9 @@
                     price: "190,000",
                     vintage: "2022",
                     desc: "\"포도의 품질\"이 가장 중요하다는 철학으로 빚은 깊이 있고 단단한 블랙베리 아로마와 긴 숙성 잠재력을 지닌 쥬브레 샹베르탱의 걸작.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.0",
                     tag: "King Gevrey"
                 },
                 {
@@ -746,7 +843,9 @@
                     price: "213,000",
                     vintage: "2019",
                     desc: "농밀한 블랙커런트와 야생 체리, 정갈한 스파이스 뉘앙스가 어우러져 입안을 가득 채우는 뉘 생 조르쥬 지역의 걸작 레드 와인.",
-                    pairing: "생산지: 프랑스 부르고뉴(Bourgogne, France) | 품종: Pinot Noir (피노 누아)",
+                    region: "프랑스 부르고뉴(Bourgogne, France)",
+                    grapes: "Pinot Noir (피노 누아)",
+                    abv: "13.5",
                     tag: "Nuits Premium"
                 }
             ]
@@ -754,11 +853,28 @@
 
         // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
+            initFilterCountLabels();
             renderMenus();
             lucide.createIcons();
         });
 
-        // Dynamic Renderer to display all matching submenus in single column
+        function initFilterCountLabels() {
+            const counts = {
+                all: 0,
+                Sparkling: menuData.Sparkling.length,
+                White: menuData.White.length,
+                Orange: menuData.Orange.length,
+                Red: menuData.Red.length
+            };
+            counts.all = counts.Sparkling + counts.White + counts.Orange + counts.Red;
+
+            document.getElementById('btn-count-all').innerText = `전체 와인 (${counts.all})`;
+            document.getElementById('btn-count-Sparkling').innerText = `Sparkling (${counts.Sparkling})`;
+            document.getElementById('btn-count-White').innerText = `White (${counts.White})`;
+            document.getElementById('btn-count-Orange').innerText = `Orange (${counts.Orange})`;
+            document.getElementById('btn-count-Red').innerText = `Red (${counts.Red})`;
+        }
+
         function renderMenus() {
             const categories = ['Sparkling', 'White', 'Orange', 'Red'];
             
@@ -785,12 +901,7 @@
                         tagHtml = `<span class="no-print bg-poco-orange/15 text-poco-orange text-[10px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0 font-sans whitespace-nowrap">${item.tag}</span>`;
                     }
 
-                    // Render Glass Price badge if applicable (such as Jean-Louis Chave)
-                    let glassPriceHtml = '';
-                    if (item.glassPrice) {
-                        glassPriceHtml = `<span class="text-[11px] font-sans font-medium text-white bg-poco-orange px-2 py-0.5 rounded-lg mt-1 inline-block whitespace-nowrap">Gl. ${item.glassPrice}</span>`;
-                    }
-
+                    // Render with highly-premium subtle sub-info layout (no glass price rendered!)
                     card.innerHTML = `
                         <!-- Single row elegant layout with flex wrap protection to prevent overlapping -->
                         <div class="flex flex-wrap md:flex-nowrap items-start justify-between gap-4 mb-1 w-full">
@@ -806,7 +917,6 @@
                                 <span class="font-serif font-semibold text-sm md:text-base text-poco-orange whitespace-nowrap">
                                     ${item.price}
                                 </span>
-                                ${glassPriceHtml}
                             </div>
                         </div>
                         
@@ -818,6 +928,17 @@
                                 <p class="text-xs md:text-sm text-poco-forest/70 font-light leading-relaxed mt-1.5 max-w-2xl">
                                     ${item.desc}
                                 </p>
+                                
+                                <!-- Premium Wine Details Row: Region, Grapes & ABV -->
+                                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-poco-forest/55 font-light mt-3 bg-poco-sand/35 px-3 py-1.5 rounded-xl border border-poco-sand/50 max-w-2xl">
+                                    <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-poco-orange"></i> ${item.region}</span>
+                                    <span class="text-poco-orange/30 font-light">|</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="grape" class="w-3.5 h-3.5 text-poco-orange"></i> ${item.grapes}</span>
+                                    ${item.abv ? `
+                                    <span class="text-poco-orange/30 font-light">|</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="percent" class="w-3.5 h-3.5 text-poco-orange"></i> ${item.abv}%</span>
+                                    ` : ''}
+                                </div>
                             </div>
                         </div>
                         <!-- Interactive print-only spacer -->
@@ -857,7 +978,6 @@
             });
         }
 
-        // Modal Popups for wine story detail card
         function openModalDetails(category, id) {
             const item = menuData[category].find(i => i.id === id);
             if (!item) return;
@@ -868,15 +988,18 @@
 
             document.getElementById('modal-category').innerText = category.toUpperCase();
             document.getElementById('modal-name').innerText = modalNameWithVintage;
-            
-            // Render beautiful Glass price indication inside the details card as well!
-            let priceText = item.price + " ₩";
-            if (item.glassPrice) {
-                priceText += ` (Glass: ${item.glassPrice} ₩)`;
-            }
-            document.getElementById('modal-price').innerText = priceText;
+            document.getElementById('modal-price').innerText = item.price + " ₩";
             document.getElementById('modal-desc').innerText = item.desc;
-            document.getElementById('modal-pairing').innerText = item.pairing || "포코의 소믈리에가 엄선하는 시즌 와인과 요리의 조화로운 감동을 느껴보세요.";
+            
+            // Generate structured sommelier note dynamically inside details modal
+            let sommelierNoteHtml = `
+                <div class="space-y-1.5 text-xs text-poco-forest/80 font-light">
+                    <p class="flex items-center gap-1.5"><strong class="font-medium text-poco-forest w-16 flex-shrink-0">📍 생산지:</strong> <span>${item.region}</span></p>
+                    <p class="flex items-center gap-1.5"><strong class="font-medium text-poco-forest w-16 flex-shrink-0">🍇 품종:</strong> <span>${item.grapes}</span></p>
+                    ${item.abv ? `<p class="flex items-center gap-1.5"><strong class="font-medium text-poco-forest w-16 flex-shrink-0">🍷 도수:</strong> <span>${item.abv}%</span></p>` : ''}
+                </div>
+            `;
+            document.getElementById('modal-pairing').innerHTML = sommelierNoteHtml;
 
             const modal = document.getElementById('detail-modal');
             const card = document.getElementById('modal-card');
